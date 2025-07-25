@@ -11,7 +11,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://task-manager-kappa-swart.vercel.app",
+];
+
+app.use(
+  cors(allowedOrigins)
+);
 
 await connectDB();
 
@@ -19,7 +28,7 @@ await connectDB();
 app.use("/api/user", userRouter);
 
 // tasks routes
-app.use("/api/task", taskRouter);
+app.use("/api/task", taskRouter)
 
 app.get("/", (req, res) => {
   res.send("server is running correctly");
