@@ -52,7 +52,7 @@ export const register = async (req, res) => {
 // login API
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = JSON.parse(JSON.stringify(req.body)) || req.body;
     if (!email || !password) {
       return res
         .status(400)
