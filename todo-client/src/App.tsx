@@ -9,6 +9,7 @@ import Layout from "./pages/Layout";
 import AddTask from "./pages/AddTask";
 import RequireAuth from "./components/AuthProtector";
 import NotFound from "./pages/NotFound";
+import TaskDetails from "./pages/TaskDetails";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route element={<RequireAuth />}>
               <Route path="/" element={<Hero />} />
               <Route path="/add-task" element={<AddTask />} />
+              <Route path="/task/:id" element={<TaskDetails />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
