@@ -56,9 +56,9 @@ const TaskDetails = () => {
           </div>
           <div>
             Assigned to:{" "}
-            {typeof task.assignedTo === "string"
-              ? task.assignedTo
-              : (task.assignedTo.name as string)}
+            {task.assignedTo && typeof task.assignedTo === "object"
+              ? task.assignedTo.name
+              : task.assignedTo}
           </div>
           <div>
             <p>Created at: {new Date(task.createdAt).toLocaleDateString()}</p>

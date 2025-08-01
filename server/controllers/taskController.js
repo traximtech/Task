@@ -27,7 +27,7 @@ export const getSingleTask = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const task = await Task.findById(id);
+    const task = await Task.findById(id).populate("assignedTo", "name");
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }
