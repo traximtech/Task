@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { useState } from "react";
@@ -14,6 +15,23 @@ const Register = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!name) {
+      toast.error("Name required");
+      return;
+    } else if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    } else if (!passwordRegex.test(password)) {
+      toast.error(
+        "Password must be at least 8 characters long and contain at least one letter and one number"
+      );
+      return;
+    }
+
     try {
       setLoading(true);
       const data = await axios.post(
@@ -36,7 +54,7 @@ const Register = () => {
 
   return (
     <div className="flex ">
-      <div className="w-full" >
+      <div className="w-full">
         <img
           src={image}
           alt=" image"
@@ -48,8 +66,7 @@ const Register = () => {
           <div className="w-full py-6 text-center">
             <h1 className="text-3xl font-bold mb-3">Register</h1>
             <p className="font-light">
-              Enter Your Credentials to{" "}
-              <span className="">Register</span>.
+              Enter Your Credentials to <span className="">Register</span>.
             </p>
           </div>
           <form
@@ -64,7 +81,6 @@ const Register = () => {
                 onChange={(e) => setName(e.target.value)}
                 value={name}
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
-                required
               />
             </div>
             <div className="flex flex-col">
@@ -75,7 +91,6 @@ const Register = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
-                required
               />
             </div>
             <div className="flex flex-col">
@@ -86,7 +101,6 @@ const Register = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
-                required
               />
             </div>
             <button

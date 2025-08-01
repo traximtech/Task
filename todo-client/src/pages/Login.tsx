@@ -1,9 +1,10 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
-import image from "../assets/login-pic.jpg"
+import image from "../assets/login-pic.jpg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,10 +13,22 @@ const Login = () => {
 
   const navigate = useNavigate();
 
- 
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    } else if (!passwordRegex.test(password)) {
+      toast.error(
+        "Password must be at least 8 characters, contain at least one letter and one number"
+      );
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await axios.post(
@@ -57,7 +70,6 @@ const Login = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
-                required
               />
             </div>
             <div className="flex flex-col">
@@ -68,7 +80,6 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
                 className="border-b-2 border-gray-300 p-2 outline-none mb-6"
-                required
               />
             </div>
             <button
@@ -92,7 +103,11 @@ const Login = () => {
         </div>
       </div>
       <div className="w-full">
-        <img src={image} alt=" image"  className=" w-full h-screen object-cover" />
+        <img
+          src={image}
+          alt=" image"
+          className=" w-full h-screen object-cover"
+        />
       </div>
     </div>
   );
