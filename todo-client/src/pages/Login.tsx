@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import image from "../assets/login-pic.jpg"
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -37,8 +38,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-full max-w-sm p-6  border border-primary/30 shadow-xl shadow-primary/15 rounded-lg">
+    <div className="flex">
+      <div className="w-full p-6 m-auto">
         <div className="flex flex-col items-center justify-center">
           <div className="w-full py-6 text-center">
             <h1 className="text-3xl font-bold mb-3">Login</h1>
@@ -89,6 +90,9 @@ const Login = () => {
             </p>
           </div>
         </div>
+      </div>
+      <div className="w-full">
+        <img src={image} alt=" image"  className=" w-full h-screen object-cover" />
       </div>
     </div>
   );

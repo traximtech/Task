@@ -33,7 +33,7 @@ const TaskDetails = () => {
           <h2>{task.title}</h2>
           <p>{task.description}</p>
           {/* Add more task details here */}
-        </div>
+        </div> 
       )}
     </div>
   );

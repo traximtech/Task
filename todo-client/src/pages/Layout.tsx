@@ -1,10 +1,8 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
-interface props {
-  children: React.ReactNode;
-}
 
-const Layout = ({ children }: props) => {
+
+const Layout = () => {
   return (
     <div className="flex">
       {/* Sidebar */}
@@ -54,7 +52,9 @@ const Layout = ({ children }: props) => {
       </div>
 
       {/* Main Container */}
-      <div className="ml-[20%] w-full">{children}</div>
+      <div className="ml-[20%] w-full">
+        <Outlet />
+      </div>
     </div>
   );
 };

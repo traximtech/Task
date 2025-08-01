@@ -16,20 +16,30 @@ function App() {
     <>
       <Toaster />
       <Router>
-        <Header />
-        <Layout>
-          <Routes>
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-            <Route element={<RequireAuth />}>
-              <Route path="/" element={<Hero />} />
-              <Route path="/add-task" element={<AddTask />} />
-              <Route path="/task/:id" element={<TaskDetails />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
+          
+          <Route
+            element={
+              <RequireAuth>
+                <>
+                  <Header />
+                  <Layout />
+                </>
+              </RequireAuth>
+            }
+          >
+            <Route path="/" element={<Hero />} />
+            <Route path="/add-task" element={<AddTask />} />
+            <Route path="/task/:id" element={<TaskDetails />} />
+          
+          </Route>
+
+         
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </Router>
     </>
   );

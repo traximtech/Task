@@ -41,7 +41,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks, onEdit }) => {
   const getStatusClasses = (status: string) => {
     switch (status) {
       case "todo":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-black";
       case "in-progress":
         return "bg-blue-100 text-blue-800";
       case "done":
@@ -52,16 +52,26 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks, onEdit }) => {
   };
 
   return (
-    <NavLink to={`/task/${task._id}`}>
-      <div className="bg-white p-4 shadow-md rounded-xl border border-gray-200 w-full mx-auto relative">
+    <div className="bg-white  shadow-md rounded-xl w-full mx-auto relative">
+      <p className="text-sm text-gray-400 absolute top-4 right-4">
+        Assign to:{" "}
+        <span className="font-semibold text-black">
+          {task.assignedTo && typeof task.assignedTo === "object"
+            ? task.assignedTo.name
+            : task.assignedTo}
+        </span>{" "}
+      </p>
+      <div className="bg-[#e5e5e5] p-4 border-b-2 ">
         <h3 className="text-lg font-semibold">{task.title}</h3>
-        <p className="text-gray-600 mt-2 text-sm w-80  line-clamp-2 ">
+      </div>
+      <div className="p-4">
+        <p className=" mt-2 text-sm w-80  line-clamp-2 ">
           {task.description}
         </p>
-        <p className="py-2">
+        <p className="py-3 text-sm">
           Status:{" "}
           <span
-            className={` text-xs px-2 rounded-full font-semibold uppercase ${getStatusClasses(
+            className={`text-[10px] px-2 py-1 rounded-full font-semibold uppercase ${getStatusClasses(
               task.status
             )}`}
           >
@@ -69,36 +79,32 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks, onEdit }) => {
           </span>
         </p>
 
-        <p className="text-sm text-gray-400 absolute top-2 right-4">
-          Assign to:{" "}
-          <span className="font-semibold text-black">
-            {task.assignedTo && typeof task.assignedTo === "object"
-              ? task.assignedTo.name
-              : task.assignedTo}
-          </span>{" "}
-        </p>
-
+        <div className="text-xs">
+          <p>Created at: {new Date(task.createdAt).toLocaleDateString()}</p>
+        </div>
         <div className="flex gap-2 mt-4 justify-between">
-          <div>
-            <p>Created at: {new Date(task.createdAt).toLocaleDateString()}</p>
+          <div className="px-6 py-1 rounded-full bg-blue-400 hover:bg-blue-200 text-[10px] font-semibold">
+            <NavLink to={`/task/${task._id}`}>See Details</NavLink>
           </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => onEdit(task)}
-              className="px-3 py-1 rounded-full text-[10px] bg-blue-400 text-white hover:bg-blue-200"
-            >
-              🖊
-            </button>
-            <button
-              onClick={handleDelete}
-              className="px-3 py-1 rounded-full bg-red-400 text-[10px] text-white hover:bg-red-200"
-            >
-              ❌
-            </button>
+          <div className="flex flex-col items-center gap-1">
+            <div className="flex gap-1.5">
+              <button
+                onClick={() => onEdit(task)}
+                className="px-3 py-1 rounded-full text-[10px] bg-blue-400 text-white hover:bg-blue-200"
+              >
+                🖊
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-3 py-1 rounded-full bg-red-400 text-[10px] text-white hover:bg-red-200"
+              >
+                ❌
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </NavLink>
+    </div>
   );
 };
 

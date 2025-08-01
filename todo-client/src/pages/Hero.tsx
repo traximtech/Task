@@ -6,6 +6,7 @@ import TaskModel from "../components/TaskModel";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Loader from "../components/Loader";
+import { NavLink } from "react-router-dom";
 
 const Hero = () => {
   const [open, setOpen] = useState<boolean>(false);

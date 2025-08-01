@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
+const RequireAuth = ({ children }: { children?: React.ReactNode }) => {
+  const navigate = useNavigate();
 
-const RequireAuth = () => {
-
-    const navigate = useNavigate();
-
-    const isTokenValid = () => {
+  const isTokenValid = () => {
     try {
       const token = localStorage.getItem("token");
       if (!token) return false;
@@ -24,8 +22,7 @@ const RequireAuth = () => {
     }
   }, []);
 
-  return isTokenValid() ? <Outlet /> : <Navigate to="/login" replace />;
-
+  return isTokenValid() ? children ? <>{children}</> : <Outlet /> : null;
 };
 
 export default RequireAuth;
