@@ -1,6 +1,8 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useParams } from "react-router-dom";
+import Loader from "../components/Loader";
 
 interface Task {
   _id: string;
@@ -23,7 +25,10 @@ const TaskDetails = () => {
         );
         setTask(res.data);
       } catch (error) {
-        console.error(error);
+        
+        const err = error as AxiosError<{ message: string }>;
+        const message = err.response?.data?.message || "Something went wrong";
+        toast.error(message);
       }
     };
     fetchTask();
@@ -65,7 +70,7 @@ const TaskDetails = () => {
           </div>
         </>
       ) : (
-        <p>Loading task...</p>
+        <p><Loader /></p>
       )}
     </div>
   );
