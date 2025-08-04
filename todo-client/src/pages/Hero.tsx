@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-
 import { useEffect, useState } from "react";
 import TaskCard, { type Task } from "../components/TaskCard";
 import toast from "react-hot-toast";
