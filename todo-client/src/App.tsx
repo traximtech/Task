@@ -10,6 +10,7 @@ import AddTask from "./pages/AddTask";
 import RequireAuth from "./components/AuthProtector";
 import NotFound from "./pages/NotFound";
 import TaskDetails from "./pages/TaskDetails";
+import EditTask from "./pages/EditTask";
 
 function App() {
   return (
@@ -20,7 +21,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          
           <Route
             element={
               <RequireAuth>
@@ -34,11 +34,10 @@ function App() {
             <Route path="/" element={<Hero />} />
             <Route path="/add-task" element={<AddTask />} />
             <Route path="/task/:id" element={<TaskDetails />} />
-          
-          </Route>
+            <Route path="/edit/:id" element={<EditTask />} />
+            <Route path="*" element={<NotFound />} />
 
-         
-          <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
       </Router>
     </>

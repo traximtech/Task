@@ -3,7 +3,7 @@
 import axios, { AxiosError } from "axios";
 import React from "react";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface Task {
   _id: string;
@@ -18,14 +18,19 @@ export interface Task {
 interface TaskCardProps {
   task: Task;
   fetchTasks: () => void;
-  onEdit: (task: Task) => void;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks, onEdit }) => {
+const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
+  const navigate = useNavigate();
   const handleDelete = async () => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_BASE_URL}/api/task/deleteTask/${task._id}`
+        `${import.meta.env.VITE_BASE_URL}/api/task/deleteTask/${task._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
       
       toast.success("Task deleted successfully");
@@ -52,7 +57,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks, onEdit }) => {
 
   return (
     <div className="bg-white  shadow-md rounded-xl w-full mx-auto relative">
-      <Link to={`/task/${task._id}`}>
+      <Link to={`/edit/${task._id}`}>
         <p className="text-sm text-gray-400 absolute top-4 right-4">
           Assign to:{" "}
           <span className="font-semibold text-black">
@@ -92,7 +97,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks, onEdit }) => {
         <div className="flex flex-col items-center gap-1">
           <div className="flex gap-1.5">
             <button
-              onClick={() => onEdit(task)}
+              onClick={() => navigate(`/edit/${task._id}`)}
               className="px-3 py-1 rounded-full text-[10px] bg-blue-400 text-white hover:bg-blue-200"
             >
               🖊

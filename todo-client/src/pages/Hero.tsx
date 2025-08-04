@@ -2,16 +2,13 @@
 
 import { useEffect, useState } from "react";
 import TaskCard, { type Task } from "../components/TaskCard";
-import TaskModel from "../components/TaskModel";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Loader from "../components/Loader";
 
 const Hero = () => {
-  const [open, setOpen] = useState<boolean>(false);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [filterStatus, setFilterStatus] = useState<
     "all" | "todo" | "in-progress" | "done"
   >("all");
@@ -52,16 +49,7 @@ const Hero = () => {
     <Loader text="Loading the data.." />
   ) : (
     <>
-      <div className="mt-6 text-center">
-        <TaskModel
-          open={open}
-          setOpen={setOpen}
-          fetchTasks={fetchTasks}
-          editingTask={editingTask}
-          setEditingTask={setEditingTask}
-        />
-      </div>
-      <h1 className="text-3xl font-bold ">
+      <h1 className="text-3xl font-bold mt-10">
         Tasks Board <i className="fa-solid fa-xs fa-list-check"></i>
       </h1>
       <hr className="w-25 h-1 rounded-full bg-black mb-10 ml-1 mt-1" />
@@ -103,7 +91,7 @@ const Hero = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-5 px-20 pb-10">
+      <div className="grid grid-cols-2 gap-5 pr-20 pb-10">
         {filteredTasks.length === 0 && (
           <p className="text-center col-span-3 text-gray-500">No tasks found</p>
         )}
@@ -112,10 +100,6 @@ const Hero = () => {
             key={task._id}
             task={task}
             fetchTasks={fetchTasks}
-            onEdit={(task) => {
-              setEditingTask(task);
-              setOpen(true);
-            }}
           />
         ))}
       </div>

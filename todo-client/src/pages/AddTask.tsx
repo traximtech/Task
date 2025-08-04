@@ -33,30 +33,34 @@ const AddTask = () => {
     }
   }, []);
   return (
-    <div className="mt-5">
-      <h1 className="text-3xl font-bold mb-4">Create Task</h1>
-      <hr className="w-25 h-1 rounded-full -mt-3 bg-black mb-10" />
-      <div className="px-20">
+    <div className="m-10 w-4/5 mx-auto">
+      <button className="my-4 font-medium cursor-pointer" onClick={() => navigate("/")}>
+        <i className="fa-solid fa-arrow-rotate-left mr-2"></i>
+        Back to Tasks
+      </button>
+      <h1 className="text-2xl font-bold mb-1 uppercase">Create Task</h1>
+      <hr className="w-25 h-1 rounded-full bg-black mb-10" />
+      <div className="">
         <form onSubmit={handleCreateTask} className="flex flex-col gap-4">
           <div>
-            <label htmlFor="title" className="block">
-              Enter your title
+            <label htmlFor="title" className="block mb-2 font-medium">
+              Title
             </label>
             <input
               type="text"
               placeholder="Your Task Title"
-              className="border border-gray-300 outline-0 w-[80%] rounded-xl bg-black/5 p-2"
+              className="border-b-2 border-gray-500 text-[#4f4f4f] rounded-t-1xl outline-0 w-full h-12 bg-gray-50 p-2"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </div>
           <div>
-            <label htmlFor="description" className="block">
-              Enter your description
+            <label htmlFor="description" className="block font-medium">
+              Description
             </label>
-            <div className="w-[80%] h-50 mb-4 py-2 rounded-xl">
+            <div className="h-50 mb-4 py-2 rounded-xl">
               <div
-                className="border border-gray-300  bg-black/5"
+                className="border w-full border-gray-300 text-lg text-[#4f4f4f] bg-gray-50"
                 ref={editorRef}
               ></div>
             </div>
@@ -65,9 +69,13 @@ const AddTask = () => {
           <div className="flex justify-between mt-4">
             <button
               disabled={loading}
-              className="bg-black text-white px-4 py-2 rounded-xl"
+              className="bg-black uppercase font-medium text-white w-1/6 py-3 rounded-xl flex items-center justify-center"
             >
-              {loading ? "Creating..." : "Create"}
+              {loading ? (
+                <span className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
+              ) : (
+                "Create"
+              )}
             </button>
           </div>
         </form>
