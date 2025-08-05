@@ -4,10 +4,10 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Quill from "quill";
 import "react-quill/dist/quill.snow.css";
+import Button, { BackButton } from "../components/Button";
 
 const AddTask = () => {
   const [title, setTitle] = useState("");
-  
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const editorRef = useRef(null);
@@ -15,7 +15,15 @@ const AddTask = () => {
 
   const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    if (
+      title.trim() === "" ||
+      quillRef.current?.getText().trim() === ""
+    ) {
+      toast.error("Task title and description are required");
+      return;
+    }
+
     await axios.post(`${import.meta.env.VITE_BASE_URL}/api/task/add`, {
       title,
       description: quillRef.current?.getText(),
@@ -24,7 +32,6 @@ const AddTask = () => {
     navigate("/");
     setLoading(true);
     setTitle("");
-   
   };
 
   useEffect(() => {
@@ -34,10 +41,12 @@ const AddTask = () => {
   }, []);
   return (
     <div className="m-10 w-4/5 mx-auto">
-      <button className="my-4 font-medium cursor-pointer" onClick={() => navigate("/")}>
+      <BackButton
+        onClick={() => navigate("/")}
+      >
         <i className="fa-solid fa-arrow-rotate-left mr-2"></i>
-        Back to Tasks
-      </button>
+        Go Back
+      </BackButton>
       <h1 className="text-2xl font-bold mb-1 uppercase">Create Task</h1>
       <hr className="w-25 h-1 rounded-full bg-black mb-10" />
       <div className="">
@@ -67,16 +76,18 @@ const AddTask = () => {
           </div>
 
           <div className="flex justify-between mt-4">
-            <button
-              disabled={loading}
-              className="bg-black uppercase font-medium text-white w-1/6 py-3 rounded-xl flex items-center justify-center"
+            <Button
+              disabled={
+                loading || !title.trim()
+              }
+              className="disabled:cursor-not-allowed disabled:bg-gray-400 bg-black/80 hover:bg-black uppercase font-medium text-white w-1/6 py-3 rounded-xl flex items-center justify-center"
             >
               {loading ? (
                 <span className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"></span>
               ) : (
                 "Create"
               )}
-            </button>
+            </Button>
           </div>
         </form>
       </div>

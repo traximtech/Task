@@ -27,16 +27,16 @@ export const getAllTasks = async (req, res) => {
 export const getSingleTask = async (req, res) => {
   const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid task ID" });
-    }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ success: false, message: "Invalid task ID" });
+  }
 
   try {
     const task = await Task.findById(id).populate("assignedTo", "name");
     if (!task) {
-      return res.status(404).json({ success: false, message: "Task not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Task not found" });
     }
     res.status(200).json(task);
   } catch (error) {

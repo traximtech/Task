@@ -30,7 +30,7 @@ export const register = async (req, res) => {
         .json({ success: false, message: "User already exists" });
     }
 
-    // secure your password
+    // hash password
     const hashPassword = await bcrypt.hash(password, 10);
 
     const createUser = await User.create({
@@ -58,7 +58,7 @@ export const login = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Email and Password required" });
     }
-    // check if user exists
+
     const user = await User.findOne({ email });
     if (!user) {
       return res
@@ -66,7 +66,6 @@ export const login = async (req, res) => {
         .json({ success: false, message: "User does not exist" });
     }
 
-    // check if password is correct
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
@@ -76,10 +75,10 @@ export const login = async (req, res) => {
 
     // jwt token
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, name: user.name },
       process.env.JWT_SECRET,
       {
-        expiresIn: 300000,
+        expiresIn: 3600, // 1 hour
       }
     );
 

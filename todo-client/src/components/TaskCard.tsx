@@ -2,7 +2,7 @@
 import axios, { AxiosError } from "axios";
 import React from "react";
 import toast from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export interface Task {
   _id: string;
@@ -20,7 +20,7 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
-  const navigate = useNavigate();
+ 
   const handleDelete = async () => {
     try {
       await axios.delete(
@@ -55,14 +55,14 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
   };
 
   return (
-    <div className="bg-white  shadow-md rounded-xl w-full mx-auto relative">
+    <div className="bg-white  shadow-md rounded-xl w-full h-52 mx-auto relative">
       <Link to={`/edit/${task._id}`}>
         <p className="text-sm text-gray-400 absolute top-4 right-4">
           Assign to:{" "}
           <span className="font-semibold text-black">
             {task.assignedTo && typeof task.assignedTo === "object"
               ? task.assignedTo.name
-              : task.assignedTo}
+              : "No One"}
           </span>{" "}
         </p>
         <div className="bg-[#e5e5e5] p-4 border-b-2 ">
@@ -78,29 +78,21 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
           </div>
         </div>
       </Link>
-      <div className="flex gap-2 items-center justify-between px-4 pb-2">
-        {/* <div className="px-6 py-1 rounded-full bg-blue-400 hover:bg-blue-200 text-[10px] font-semibold">
-          See Details
-        </div> */}
-
+      <div className="flex flex-row gap-2 items-center justify-between px-4 pb-2 ">
+        <div>
+          
           <p className="py-3 text-sm font-medium">
             Status:{" "}
             <span
               className={`text-[10px] px-2 py-1 rounded-full font-semibold uppercase ${getStatusClasses(
                 task.status
               )}`}
-            >
+              >
               {task.status}
             </span>
           </p>
-        <div className="flex flex-col items-center gap-1">
-          <div className="flex gap-1.5">
-            <button
-              onClick={() => navigate(`/edit/${task._id}`)}
-              className="px-3 py-1 rounded-full text-[10px] bg-blue-400 text-white hover:bg-blue-200"
-            >
-              🖊
-            </button>
+              </div>
+          <div className="">
             <button
               onClick={handleDelete}
               className="px-3 py-1 rounded-full bg-red-400 text-[10px] text-white hover:bg-red-200"
@@ -108,7 +100,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
               ❌
             </button>
           </div>
-        </div>
+        
       </div>
     </div>
   );
