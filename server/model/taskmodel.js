@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema(
   {
-    id: mongoose.Schema.Types.ObjectId,
     title: String,
     description: String,
     status: {
@@ -12,8 +11,6 @@ const taskSchema = new mongoose.Schema(
     },
     assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    createdAt:  { type: Date, default: Date.now()},
-    updatedAt:  { type: Date, default: Date.now()},
   },
   { timestamps: true }
 );

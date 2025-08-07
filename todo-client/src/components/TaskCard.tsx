@@ -1,4 +1,4 @@
-
+import { useDraggable } from "@dnd-kit/core";
 import axios, { AxiosError } from "axios";
 import React from "react";
 import toast from "react-hot-toast";
@@ -17,10 +17,10 @@ export interface Task {
 interface TaskCardProps {
   task: Task;
   fetchTasks: () => void;
+  dragging?: boolean;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
- 
+const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks }) => {
   const handleDelete = async () => {
     try {
       await axios.delete(
@@ -31,7 +31,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
           },
         }
       );
-      
+
       toast.success("Task deleted successfully");
       fetchTasks();
     } catch (error: unknown) {
@@ -54,8 +54,21 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
     }
   };
 
+  const { transform } = useDraggable({
+    id: task._id,
+  });
+
+  const style = transform
+    ? {
+        transform: `translate(${transform.x}px, ${transform.y}px)`,
+      }
+    : undefined;
+
   return (
-    <div className="bg-white  shadow-md rounded-xl w-full h-52 mx-auto relative">
+    <div
+      style={style}
+      className="bg-white cursor-grab shadow-md rounded-xl w-full h-52 mx-auto relative overflow-hidden"
+    >
       <Link to={`/edit/${task._id}`}>
         <p className="text-sm text-gray-400 absolute top-4 right-4">
           Assign to:{" "}
@@ -69,9 +82,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
           <h3 className="text-lg font-semibold">{task.title}</h3>
         </div>
         <div className="p-4">
-          <p className="text-sm w-80  line-clamp-2 ">
-            {task.description}
-          </p>
+          <p className="text-sm w-80  line-clamp-2 ">{task.description}</p>
 
           <div className="text-xs mt-4 -mb-3 font-medium">
             <p>Created at: {new Date(task.createdAt).toLocaleDateString()}</p>
@@ -80,27 +91,25 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, fetchTasks,  }) => {
       </Link>
       <div className="flex flex-row gap-2 items-center justify-between px-4 pb-2 ">
         <div>
-          
           <p className="py-3 text-sm font-medium">
             Status:{" "}
             <span
               className={`text-[10px] px-2 py-1 rounded-full font-semibold uppercase ${getStatusClasses(
                 task.status
               )}`}
-              >
+            >
               {task.status}
             </span>
           </p>
-              </div>
-          <div className="">
-            <button
-              onClick={handleDelete}
-              className="px-3 py-1 rounded-full bg-red-400 text-[10px] text-white hover:bg-red-200"
-            >
-              ❌
-            </button>
-          </div>
-        
+        </div>
+        <div className="">
+          <button
+            onClick={handleDelete}
+            className="px-3 py-1 rounded-full bg-red-400 text-[10px] text-white hover:bg-red-200 "
+          >
+            ❌
+          </button>
+        </div>
       </div>
     </div>
   );
