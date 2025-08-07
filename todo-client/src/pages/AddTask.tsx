@@ -16,10 +16,7 @@ const AddTask = () => {
   const handleCreateTask = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (
-      title.trim() === "" ||
-      quillRef.current?.getText().trim() === ""
-    ) {
+    if (title.trim() === "" || quillRef.current?.getText().trim() === "") {
       toast.error("Task title and description are required");
       return;
     }
@@ -36,14 +33,22 @@ const AddTask = () => {
 
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
-      quillRef.current = new Quill(editorRef.current, { theme: "snow" });
+      quillRef.current = new Quill(editorRef.current, {
+        theme: "snow",
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "image"],
+            [{ code: "codeblock" }],
+          ],
+        },
+      });
     }
   }, []);
   return (
     <div className="m-10 w-4/5 mx-auto">
-      <BackButton
-        onClick={() => navigate("/")}
-      >
+      <BackButton onClick={() => navigate("/")}>
         <i className="fa-solid fa-arrow-rotate-left mr-2"></i>
         Go Back
       </BackButton>
@@ -77,9 +82,7 @@ const AddTask = () => {
 
           <div className="flex justify-between mt-4">
             <Button
-              disabled={
-                loading || !title.trim()
-              }
+              disabled={loading || !title.trim()}
               className="disabled:cursor-not-allowed disabled:bg-gray-400 bg-black/80 hover:bg-black uppercase font-medium text-white w-1/6 py-3 rounded-xl flex items-center justify-center"
             >
               {loading ? (
